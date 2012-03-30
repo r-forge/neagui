@@ -1,0 +1,10 @@
+Package: neaGUI
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2012-03-30
+Author: setia pramana
+Maintainer: setia pramana <setia.pramana@ki.se>
+Description: More about what it does (maybe more than one line)
+License: GPL-2
+Collate: checkFgs.R getAgs.R getDb.R getFGS.R getNtw.R  getPnet.R LoadRdata.R neaGUI.R neaMod.R  savingRes.R savingRwd.R
