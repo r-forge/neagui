@@ -39,7 +39,7 @@ min = 0, max = nperm, width = 300)
     if (fgslib=="KEGG.db"){
 require(KEGG.db)
         require(org.Hs.eg.db)
-        mapped.genes<-as.list(KEGGPATHID2EXTID)  
+        mapped.genes <-as.list(KEGGPATHID2EXTID)  
   fgs<-list()
   for (i in 1:length(mapped.genes)){
       mg.name<-mapped.genes[[i]]

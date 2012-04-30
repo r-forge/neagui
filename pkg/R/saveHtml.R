@@ -1,5 +1,5 @@
-
-saveHtml <- function (ResultNEA,fl) {
+saveHtml <-
+function (ResultNEA,fl) {
 if (FGS=="KEGG" & AnnotationDB== "KEGG.db")  linkID <- paste("http://www.genome.jp/dbget-bin/www_bget?pathway:",ResultNEA$PATH_ID,sep="")
 
 ResultNEAsrt <- ResultNEA[order(ResultNEA$P_value),]
@@ -26,11 +26,10 @@ algn <- list(Number_links='text-align:center',Expected_links='text-align:center'
 
 
 hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.link=list(PATH_ID=linkIDsrt ),col.style= algn ,
- cellspacing=0,table.class='raw', col.width=c(PATH_ID	='75px', P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
+ cellspacing=0,table.class='raw', col.width=c(PATH_ID='75px', P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
 
 closePage(p)
 
 browseURL(fl)
 }
-
 
