@@ -220,8 +220,7 @@ Perm <- as.numeric(tclvalue(permNum))
 FGS <- get("FGS", envir = .GlobalEnv )
 AGS <- get("AGS", envir = .GlobalEnv )
 NETWORK <- get("NETWORK", envir = .GlobalEnv )
-
-            assign("AnnotationDB",dbInput, envir = .GlobalEnv)
+AnnotationDB <<- dbInput
 
 FGS <- toupper(FGS)
 AGS <- toupper(AGS)
@@ -252,9 +251,9 @@ if (is.null(pexist)) pnet <- NULL
 
 
 #### Main Analysis ####
-assign("stat",rbValstat, envir = .GlobalEnv)
-            assign("nperm",Perm , envir = .GlobalEnv)
 
+stat <<- rbValstat
+                        nperm <<- Perm 
 
 res <-neaMod(ags=AGS, fgs = FGS, fgslib  = dbInput, network=NETWORK, nperm = nperm , seed = Seed, pnet=pnet, stat=stat )
 
@@ -305,8 +304,10 @@ return(GoInput )
 
 goID <-names(res[[1]])
 resGO <- t(sapply(goID ,GoTerm ))
-ResultNEAxls <- data.frame(resGO ,Number_Link= res$nlink, Expected_link = res$exp.link,
-Number_of_Genes=res$ngenefgs ,Number_of_AGSGenes=res$numgene, ZScore=res$zscore, Pvalue=res$pvalue,  FDR= res$FDR)
+                              colnames(resGO) <- c("GOID", "Term", "Definition", "Ontology")
+
+ResultNEAxls <- data.frame(resGO ,Number_links= res$nlink, Expected_links = res$exp.link,
+Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
 
       }
 
@@ -362,7 +363,7 @@ tkdestroy(tt )
 onHelp <- function () 
 {
 tkgrab.release(window)
-helpIndex <- file.path(system.file("doc", package = "IsoGeneGUI"), 
+helpIndex <- file.path(system.file(package = "neaGUI"), 
 "index.html")
 browseURL(helpIndex)
 }
