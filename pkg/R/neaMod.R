@@ -46,14 +46,14 @@ min = 0, max = nperm, width = 300)
   fgs<-list()
   for (i in 1:length(mapped.genes)){
       mg.name<-mapped.genes[[i]]
- fgs[[i]] <- unique(unlist(mget(c(mg.name), org.Hs.egSYMBOL, ifnotfound=NA)))  
+ fgs[[i]] <- unique(unlist(AnnotationDbi::mget(c(mg.name), org.Hs.egSYMBOL, ifnotfound=NA)))  
   }
           names(fgs)<-names(mapped.genes)
           fgs<-fgs[-which(lapply(fgs,length)==1)]
     }
     if (fgslib=="GO.db"){
 require(org.Hs.eg.db)
-        xx<-as.list(org.Hs.egGO2ALLEGS)
+        xx<-AnnotationDbi::as.list(org.Hs.egGO2ALLEGS)
         fgs<-list()
   for (i in 1:length(xx)){
  fgs[[i]] <- unique(names(xx[[i]])) 
