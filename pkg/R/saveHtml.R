@@ -1,11 +1,17 @@
 saveHtml <-
 function (ResultNEA,fl) {
       linkID  <- NULL
+
+if (FGS=="reactome.db") ResultNEAsrt  <- ResultNEA 
+else {
 if (FGS=="KEGG" & AnnotationDB== "KEGG.db")  linkID <- paste("http://www.genome.jp/dbget-bin/www_bget?pathway:",ResultNEA$PATH_ID,sep="")
 if ( FGS%in%c("CC","BP","MF") & AnnotationDB== "GO.db")  linkID <- paste("http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=",ResultNEA$GOID,sep="")
 
 ResultNEAsrt <- ResultNEA[order(ResultNEA$P_value),]
 linkIDsrt <- linkID  [order(ResultNEA$P_value)]
+}
+
+
 
 ResultNEAsrt$Expected_links <- round(ResultNEAsrt$Expected_links ,4)
 ResultNEAsrt$Z_score <- round(ResultNEAsrt$Z_score ,6)
@@ -33,11 +39,21 @@ if (FGS=="KEGG" & AnnotationDB== "KEGG.db") {
 hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.link=list(PATH_ID=linkIDsrt ),col.style= algn ,
  cellspacing=0,table.class='raw', col.width=c(PATH_ID='75px', P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
 }
-else {
+
+
+if (AnnotationDB== "GO.db") {
 hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.link=list(GOID=linkIDsrt ),col.style= algn ,
  cellspacing=0,table.class='raw', col.width=c(GOID='75px', P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
 
 }
+
+else {
+hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.style= algn ,
+ cellspacing=0,table.class='raw', col.width=c( P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
+
+}
+
+
 closePage(p)
 
 browseURL(fl)

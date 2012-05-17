@@ -70,7 +70,7 @@ tkgrid.configure(frame15,sticky="w")
   
 ### Specify fgs ####
 
-fgslist <- c("GO Cellular Component","GO Biological Process","GO Molecular Function","KEGG Pathway", "User Defined")
+fgslist <- c("GO Cellular Component","GO Biological Process","GO Molecular Function","KEGG Pathway", "Reactome","User Defined")
 comboBox <- tkwidget(frame12,"ComboBox",editable=FALSE,values=fgslist,width="34")
 
 
@@ -87,7 +87,7 @@ tkgrid.configure(frame12,sticky="w")
 labDb <- tklabel(frame13,text="Annotation Database:                 ")
 labDb2 <- tklabel(frame13,text="Specify other annotation:")
 
-annolist <- c("GO annotation","KEGG annotation", "Other annotation")
+annolist <- c("GO annotation","KEGG annotation", "Reactome annotation",  "Other annotation")
 comboBoxAnn <- tkwidget(frame13,"ComboBox",editable=FALSE,values=annolist,width="34")
 
 tkgrid(labDb,comboBoxAnn,tklabel(frame13,text="          "),sticky="w")
@@ -181,7 +181,7 @@ print (paste("The analysis is started at ", date() ))
 rbVal1 <- as.character(tclvalue(rbValue1))
 rbValstat <- as.character(tclvalue(rbValueStat ))
 
-fgslist2 <- c("CC","BP","MF","KEGG", "UsrDfn")
+fgslist2 <- c("CC","BP","MF","KEGG", "Reactome", "UsrDfn")
 
 
 fgsChoice <- fgslist2[as.numeric(tclvalue(tcl(comboBox,"getvalue")))+1]
@@ -203,7 +203,7 @@ dbChoice <- annolist[as.numeric(tclvalue(tcl(comboBoxAnn,"getvalue")))+1]
 
              if(dbChoice == "KEGG annotation" ) dbInput <- "KEGG.db"
              if(dbChoice == "GO annotation" ) dbInput <- "GO.db"
-
+             if(dbChoice == "Reactome annotation" ) dbInput <- "reactome.db"
 
 if(dbChoice == "Other annotation" )
 {
@@ -281,7 +281,7 @@ pathId <- AnnotationDbi::as.list(KEGGPATHID2NAME)
 KEGGPath <- data.frame(PATH_ID=names(pathId ),PATH_NAME= unlist(pathId ))
 pathIDres <- data.frame(KEGGPath[which(KEGGPath[,1]  %in% PathID1 ),])
 finalres <- merge(pathIDres ,combres )
-                             finalres[,1]  <- finalres [,10]
+finalres[,1]  <- finalres [,10]
 finalres <- finalres[,-10]
 }
 
@@ -312,12 +312,32 @@ Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscor
       }
 
 
+if (FGS == "Reactome") {
+
+pathres <- as.numeric(names(res$nlink))
+pathId <- AnnotationDbi::as.list(reactomePATHID2NAME)
+pathIdres <- pathId [as.character(pathres) ]
+
+x <- lapply(pathIdres , FUN="[", 1)
+y <- lapply(x, FUN=unlist)
+ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
+ResultNEAxls <- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
+          Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
+
+
+}
+
+if (FGS == "UsrDfn") {
+
+ResultNEAxls <- data.frame(PathID=  names(res$nlink),Number_links= res$nlink, Expected_links = res$exp.link,
+Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
+
+}
+
 permutedNetwork <- res$pnetout 
 if (is.null(pnet) == F) permutedNetwork <- pnet
 
-#ResultNEA <- data.frame(Network.links= res$nlink, Expected.link = res$exp.link, Z.score=res$zscore,p.value=res$pvalue,FDR=res$FDR)
 ResultNEA <- ResultNEAxls 
-
 network.link.num <- res$res.nlink
 FGS.genes.list <- res$fgs.list
 Ags.In.Fgs <- res$geneinfgs
