@@ -7,8 +7,9 @@ library(AnnotationDbi)
 require(KEGG.db)
 require(GO.db)
 require(org.Hs.eg.db)
-      require(hwriter)
+require(hwriter)
 tclRequire("BWidget")
+require(reactome.db)
 tt <<- tktoplevel()
 tkwm.title(tt,"neaGUI") 
 tkfocus(tt)
@@ -314,7 +315,7 @@ Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscor
 
 if (FGS == "Reactome") {
 
-pathres <- as.numeric(names(res$nlink))
+pathres <- names(res$nlink)
 pathId <- AnnotationDbi::as.list(reactomePATHID2NAME)
 pathIdres <- pathId [as.character(pathres) ]
 
@@ -401,4 +402,3 @@ tkwait.window(tt)
 
 
 }
-
