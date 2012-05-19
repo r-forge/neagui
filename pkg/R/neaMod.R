@@ -6,7 +6,7 @@ neaMod <-function (ags, fgs, fgslib = NULL, network, pnet = NULL, nperm = 50,sta
 			min = 0, max = nperm, width = 300)
 	
 	if (is.null(fgslib)) {fgslib<-"nolibrary"}
-	if (fgslib!="reactome.db" && fgslib!="GO.db") {
+	if (fgslib!="reactome.db" && fgslib!="GO.db"&&  fgslib!="KEGG.db") {
 		#if (is.null(fgslib)) {
 		if (is.character(fgs)) {
 			fgs.type = 5

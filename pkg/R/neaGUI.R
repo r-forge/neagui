@@ -256,9 +256,16 @@ if (is.null(pexist)) pnet <- NULL
 stat <<- rbValstat
                         nperm <<- Perm 
 
-res <-neaMod(ags=AGS, fgs = FGS, fgslib  = dbInput, network=NETWORK, nperm = nperm , seed = Seed, pnet=pnet, stat=stat )
+res <<-neaMod(ags=AGS, fgs = FGS, fgslib  = dbInput, network=NETWORK, nperm = nperm , seed = Seed, pnet=pnet, stat=stat )
 
                         pb <- tkProgressBar(title = "Analysis progress bar", "Analysis is being finalized, please wait...", width = 300)
+
+if (length(res$nlink)<1 ) {
+tkmessageBox(message = "No result, please check your inputs!!!")
+
+}
+
+else {
 
 if (FGS == "KEGG")  { 
 
@@ -313,22 +320,22 @@ Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscor
       }
 
 
-if (FGS == "Reactome") {
+if (FGS == "REACTOME") {
 
-pathres <- names(res$nlink)
-pathId <- AnnotationDbi::as.list(reactomePATHID2NAME)
-pathIdres <- pathId [as.character(pathres) ]
+pathres <<- names(res$nlink)
+pathId <<- AnnotationDbi::as.list(reactomePATHID2NAME)
+pathIdres <<- pathId [as.character(pathres) ]
 
-x <- lapply(pathIdres , FUN="[", 1)
-y <- lapply(x, FUN=unlist)
-ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
-ResultNEAxls <- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
+x <<- lapply(pathIdres , FUN="[", 1)
+y <<- lapply(x, FUN=unlist)
+ReactomePath <<- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
+ResultNEAxls <<- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
           Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
 
 
 }
 
-if (FGS == "UsrDfn") {
+if (fgsChoice=="UsrDfn") {
 
 ResultNEAxls <- data.frame(PathID=  names(res$nlink),Number_links= res$nlink, Expected_links = res$exp.link,
 Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
@@ -361,6 +368,7 @@ tkconfigure(tt,cursor="arrow")
 #tkdestroy(tt)
 }
 }
+}
 
 
 
@@ -376,6 +384,8 @@ ReturnVal <<- 0
      if(exists("AnnotationDB", envir=.GlobalEnv)) remove(AnnotationDB, envir=.GlobalEnv)
      if(exists("stat", envir=.GlobalEnv)) remove(stat, envir=.GlobalEnv)
      if(exists("nperm", envir=.GlobalEnv)) remove(nperm, envir=.GlobalEnv)
+     if(exists("res", envir=.GlobalEnv)) remove(res, envir=.GlobalEnv)
+
 
 tkgrab.release(tt )
 tkdestroy(tt )
