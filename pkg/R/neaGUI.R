@@ -256,7 +256,7 @@ if (is.null(pexist)) pnet <- NULL
 stat <<- rbValstat
                         nperm <<- Perm 
 
-res <<-neaMod(ags=AGS, fgs = FGS, fgslib  = dbInput, network=NETWORK, nperm = nperm , seed = Seed, pnet=pnet, stat=stat )
+res <-neaMod(ags=AGS, fgs = FGS, fgslib  = dbInput, network=NETWORK, nperm = nperm , seed = Seed, pnet=pnet, stat=stat )
 
                         pb <- tkProgressBar(title = "Analysis progress bar", "Analysis is being finalized, please wait...", width = 300)
 
@@ -295,10 +295,6 @@ finalres <- finalres[,-10]
 
                               ResultNEAxls <- getPathID (res )
 
-#ResultNEAxls <- data.frame(KEGGPath[which(KEGGPath[,1]  %in% PathID ),],Number_Link= res$nlink, Expected_link = res$exp.link,
-#Number_of_Genes=res$ngenefgs ,Number_of_AGSGenes=res$numgene,  ZScore=res$zscore, Pvalue=res$pvalue,  FDR= res$FDR)
-
-
 }
 
 if (FGS == "CC"| FGS == "MF"| FGS == "BP") {
@@ -326,10 +322,10 @@ pathres <<- names(res$nlink)
 pathId <<- AnnotationDbi::as.list(reactomePATHID2NAME)
 pathIdres <<- pathId [as.character(pathres) ]
 
-x <<- lapply(pathIdres , FUN="[", 1)
-y <<- lapply(x, FUN=unlist)
-ReactomePath <<- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
-ResultNEAxls <<- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
+x <- lapply(pathIdres , FUN="[", 1)
+y <- lapply(x, FUN=unlist)
+ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
+ResultNEAxls <- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
           Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
 
 
@@ -365,7 +361,6 @@ fl <- filename[3]
 saveHtml(ResultNEA,fl)
 
 tkconfigure(tt,cursor="arrow")
-#tkdestroy(tt)
 }
 }
 }
