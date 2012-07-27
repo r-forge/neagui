@@ -1,6 +1,24 @@
 neaGUI <-
 function() {
 
+
+checkObject <- function (x,del=TRUE) {
+   if (del==F) {
+      exists(x, envir=.GlobalEnv)
+      } 
+   else {
+    if(exists(x, envir=.GlobalEnv) ) remove(list=x, envir=.GlobalEnv)
+       }
+  
+}
+
+## remove output from previous analysis ###
+checkObject ("AGS")
+checkObject ("FGS")
+checkObject ("NETWORK")
+checkObject ("AnnotationDB")
+checkObject ("NETWORK")
+
 require(tcltk)
 require(nea)
 library(AnnotationDbi)
@@ -166,18 +184,12 @@ tkgrid(labSave2, resEntry,labSave3 ,sticky="w")
 
 tkgrid.configure(frame6,sticky="w")
 
-## 
-Seed <- 1234
-Perm <- 50
 
 
 #### OK and Exit Button ###
 
 OnOK <- function()
 {
-
-tkconfigure(tt,cursor="watch")
-print (paste("The analysis is started at ", date() ))
 
 rbVal1 <- as.character(tclvalue(rbValue1))
 rbValstat <- as.character(tclvalue(rbValueStat ))
@@ -186,6 +198,39 @@ fgslist2 <- c("CC","BP","MF","KEGG", "Reactome", "UsrDfn")
 
 
 fgsChoice <- fgslist2[as.numeric(tclvalue(tcl(comboBox,"getvalue")))+1]
+
+dbChoice <- annolist[as.numeric(tclvalue(tcl(comboBoxAnn,"getvalue")))+1]
+
+Seed <- as.numeric(tclvalue(Seednum))
+Perm <- as.numeric(tclvalue(permNum))
+
+if (checkObject ("Seed", del=F)==F) Seed =1234
+if (checkObject ("Perm", del=F)==F) Perm = 50
+
+
+Missing <- NULL
+if (checkObject ("AGS", del=F)==F) Missing <- c(Missing ,"AGS")
+if (length(fgsChoice)==0 )   Missing <- c(Missing ,"FGS")
+if (checkObject ("NETWORK", del=F)==F) Missing <- c(Missing ,"NETWORK")
+if (length(dbChoice)==0 )  Missing <- c(Missing ,"ANNOTATION DB")
+
+misObjt <- paste(Missing, collapse = ", ") 
+
+
+if (is.null (Missing )==F)
+tkmessageBox(title="Errors have occurred!", message= paste("The Following inputs have not been specified correctly: ", misObjt , " !!! Please input them to perform the analysis")
+,icon="error",type="ok")
+
+if (is.null (Missing ))
+
+  {
+
+
+tkconfigure(tt,cursor="watch")
+print (paste("The analysis is started at ", date() ))
+
+
+
 
 if (fgsChoice=="UsrDfn") 
 
@@ -198,9 +243,6 @@ FGS <<- fgsChoice
 }
 
 ## get the annotation database ##
-dbChoice <- annolist[as.numeric(tclvalue(tcl(comboBoxAnn,"getvalue")))+1]
-#dbInput <- dbChoice
-
 
              if(dbChoice == "KEGG annotation" ) dbInput <- "KEGG.db"
              if(dbChoice == "GO annotation" ) dbInput <- "GO.db"
@@ -214,9 +256,6 @@ else {
 getDb(dbInput)
 }
 }
-
-Seed <- as.numeric(tclvalue(Seednum))
-Perm <- as.numeric(tclvalue(permNum))
 
 FGS <- get("FGS", envir = .GlobalEnv )
 AGS <- get("AGS", envir = .GlobalEnv )
@@ -249,7 +288,6 @@ pexist <- tryCatch(pnet <- get("Pnet", envir = .GlobalEnv ), error = function(e)
 
 if (is.null(pexist)) pnet <- NULL
     }
-
 
 #### Main Analysis ####
 
@@ -311,9 +349,9 @@ else {
 	nlink.M <-   data.frame(PATH_ID = PathID1, PathID  ,res$nlink)
 	nlink.M <- merge(pathIDres ,nlink.M)
 	nlink.M <- nlink.M[,-1]
-	Mzscore <- data.frame(PATH_ID = PathID1,PathID  , res$zscore.mat)
-	Mzscore  <- merge(pathIDres ,Mzscore )
-	Mzscore <- Mzscore[,-1]
+	Z.score <- data.frame(PATH_ID = PathID1,PathID  , res$zscore.mat)
+	Z.score  <- merge(pathIDres ,Z.score )
+	Z.score <- Z.score[,-1]
   }
 
 }
@@ -343,7 +381,7 @@ else {
 	resGO <- t(sapply(goID ,GoTerm ))
 	colnames(resGO) <- c("GOID", "Term", "Definition", "Ontology")
 	nlink.M <- data.frame(resGO ,res$nlink)
-	Mzscore <- data.frame(resGO , res$zscore.mat)
+	Z.score <- data.frame(resGO , res$zscore.mat)
 	}
 
 }
@@ -374,7 +412,7 @@ else {
 	y <- lapply(x, FUN=unlist)
 	ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
 	nlink.M <- data.frame(ReactomePath ,res$nlink)
-	Mzscore <- data.frame(ReactomePath , res$zscore.mat)
+	Z.score <- data.frame(ReactomePath , res$zscore.mat)
 
 }
 
@@ -406,23 +444,36 @@ if (stat=="F") {
 
 	write.csv2(ResultNEAxls , file=filename[2], row.names =F, quote = F)
 
+
+	print (paste("The analysis is finished at ", date() ))
+	print (paste("Results are saved in ", filename [1], " and ", filename[2]))
+      close(pb)
+	fl <- filename[3]
+	saveHtml(ResultNEA,fl)
+
+
 }
 
 else {
-	save(list=c("nlink.M","Mzscore","permutedNetwork","network.link.num", "AGS","FGS","NETWORK","AnnotationDB"),file =filename [1])
+	save(list=c("nlink.M","Z.score","permutedNetwork","network.link.num", "AGS","FGS","NETWORK","AnnotationDB"),file =filename [1])
+	print (paste("The analysis is finished at ", date() ))
+	print (paste("Results are saved in ", filename [1]))
+      close(pb)
+	
+
 }
 
 
-
-print (paste("The analysis is finished at ", date() ))
-print (paste("Results are saved in ", filename [1], " and ", filename[2]))
-                        close(pb)
 ReturnVal <- tkmessageBox(title="The analysis has been done!",message="The analysis has been done! The result has been saved",
-icon="info",type="ok")
-fl <- filename[3]
-saveHtml(ResultNEA,fl)
+		icon="info",type="ok")
+
+
+
+
+rm(list=c("fgsChoice","dbChoice"))
 
 tkconfigure(tt,cursor="arrow")
+}
 }
 }
 }
@@ -434,15 +485,15 @@ onCancel <- function()
 {
 ReturnVal <<- 0
 
- if(exists("AGS", envir=.GlobalEnv) ) remove(AGS, envir=.GlobalEnv)
-     if(exists("FGS", envir=.GlobalEnv)) remove(FGS, envir=.GlobalEnv)
-                  if(exists("NETWORK", envir=.GlobalEnv)) remove(NETWORK, envir=.GlobalEnv)
-     if(exists("Pnet", envir=.GlobalEnv)) remove(Pnet, envir=.GlobalEnv)
-     if(exists("AnnotationDB", envir=.GlobalEnv)) remove(AnnotationDB, envir=.GlobalEnv)
-     if(exists("stat", envir=.GlobalEnv)) remove(stat, envir=.GlobalEnv)
-     if(exists("nperm", envir=.GlobalEnv)) remove(nperm, envir=.GlobalEnv)
-     if(exists("res", envir=.GlobalEnv)) remove(res, envir=.GlobalEnv)
-
+## remove output from previous analysis ###
+checkObject ("AGS")
+checkObject ("FGS")
+checkObject ("NETWORK")
+checkObject ("AnnotationDB")
+checkObject ("Pnet")
+checkObject ("stat")
+checkObject ("nperm")
+checkObject ("res")
 
 tkgrab.release(tt )
 tkdestroy(tt )
