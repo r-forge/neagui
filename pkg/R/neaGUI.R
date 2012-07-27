@@ -269,18 +269,19 @@ else {
 
 if (FGS == "KEGG")  { 
 
-
-getPathID <- function (res) {
-
-PathID <- names(res$nlink)
-combres <- data.frame(Number_links= res$nlink,  Expected_links = res$exp.link, 
-          Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
 getcode <- function (y) {
 ff <- substr(y,1,3)
 if( is.na(as.numeric(ff) )== T )  code <- substr(y,4,nchar(y) )
 else { code <- y
   }
 }
+
+
+if (stat=="F") {
+getPathID <- function (res) {
+PathID <- names(res$nlink)
+combres <- data.frame(Number_links= res$nlink,  Expected_links = res$exp.link, 
+          Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
 options(warn=-1)
       PathID1 <- sapply(PathID , function (x) getcode(x)  )
          options(warn=1)
@@ -293,7 +294,27 @@ finalres[,1]  <- finalres [,10]
 finalres <- finalres[,-10]
 }
 
-                              ResultNEAxls <- getPathID (res )
+
+  ResultNEAxls <- getPathID (res )
+}
+else {
+
+	### get KEGG PathID for stat= 'M' ##
+
+	PathID <- rownames(res$nlink)
+	options(warn=-1)
+  	PathID1 <- sapply(PathID , function (x) getcode(x)  )
+ 	options(warn=1)
+	pathId <- AnnotationDbi::as.list(KEGGPATHID2NAME)
+	KEGGPath <- data.frame(PATH_ID=names(pathId ),PATH_NAME= unlist(pathId ))
+	pathIDres <- data.frame(KEGGPath[which(KEGGPath[,1]  %in% PathID1 ),])
+	nlink.M <-   data.frame(PATH_ID = PathID1, PathID  ,res$nlink)
+	nlink.M <- merge(pathIDres ,nlink.M)
+	nlink.M <- nlink.M[,-1]
+	Mzscore <- data.frame(PATH_ID = PathID1,PathID  , res$zscore.mat)
+	Mzscore  <- merge(pathIDres ,Mzscore )
+	Mzscore <- Mzscore[,-1]
+  }
 
 }
 
@@ -306,27 +327,58 @@ Ontology= Ontology(term1 ))
 return(GoInput )
 }
 
-goID <-names(res[[1]])
-resGO <- t(sapply(goID ,GoTerm ))
-                              colnames(resGO) <- c("GOID", "Term", "Definition", "Ontology")
+if (stat=="F") {
+	goID <-names(res[[1]])
+	resGO <- t(sapply(goID ,GoTerm ))
+	colnames(resGO) <- c("GOID", "Term", "Definition", "Ontology")
 
-ResultNEAxls <- data.frame(resGO ,Number_links= res$nlink, Expected_links = res$exp.link,
-Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
+	ResultNEAxls <- data.frame(resGO ,Number_links= res$nlink, Expected_links = res$exp.link,
+		Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
+	}
 
-      }
+else {
+
+	### get GO PathID for stat= 'M' ##
+	goID <-rownames(res[[1]])
+	resGO <- t(sapply(goID ,GoTerm ))
+	colnames(resGO) <- c("GOID", "Term", "Definition", "Ontology")
+	nlink.M <- data.frame(resGO ,res$nlink)
+	Mzscore <- data.frame(resGO , res$zscore.mat)
+	}
+
+}
 
 
 if (FGS == "REACTOME") {
 
-pathres <<- names(res$nlink)
-pathId <<- AnnotationDbi::as.list(reactomePATHID2NAME)
-pathIdres <<- pathId [as.character(pathres) ]
+if (stat=="F") {
+	pathres <- names(res$nlink)
+	pathId <- AnnotationDbi::as.list(reactomePATHID2NAME)
+	pathIdres <- pathId [as.character(pathres) ]
 
-x <- lapply(pathIdres , FUN="[", 1)
-y <- lapply(x, FUN=unlist)
-ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
-ResultNEAxls <- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
+	x <- lapply(pathIdres , FUN="[", 1)
+	y <- lapply(x, FUN=unlist)
+	ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
+
+	ResultNEAxls <- data.frame(ReactomePath , Number_links= res$nlink,  Expected_links = res$exp.link, 
           Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscore, P_value=res$pvalue,  FDR= res$FDR)
+
+      }
+else {
+
+	### get Reactome PathID for stat= 'M' ##
+      pathres <- rownames(res$nlink)
+	pathId <- AnnotationDbi::as.list(reactomePATHID2NAME)
+	pathIdres <- pathId [as.character(pathres) ]
+	x <- lapply(pathIdres , FUN="[", 1)
+	y <- lapply(x, FUN=unlist)
+	ReactomePath <- data.frame(PATH_ID=names(y ),PATH_Desc= unlist(y))
+	nlink.M <- data.frame(ReactomePath ,res$nlink)
+	Mzscore <- data.frame(ReactomePath , res$zscore.mat)
+
+}
+
+
 
 
 }
@@ -340,17 +392,27 @@ Number_of_Genes=res$ngenefgs ,Number_of_AGS_genes=res$numgene, Z_score=res$zscor
 
 permutedNetwork <- res$pnetout 
 if (is.null(pnet) == F) permutedNetwork <- pnet
-
-ResultNEA <- ResultNEAxls 
 network.link.num <- res$res.nlink
-FGS.genes.list <- res$fgs.list
-Ags.In.Fgs <- res$geneinfgs
 
-save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num", "FGS.genes.list","Ags.In.Fgs"),file =filename [1])
 
-#save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num"),file =filename [1])
+if (stat=="F") {
+	ResultNEA <- ResultNEAxls 
+	FGS.genes.list <- res$fgs.list
+	Ags.In.Fgs <- res$geneinfgs
 
-write.csv2(ResultNEAxls , file=filename[2], row.names =F, quote = F)
+	save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num", "FGS.genes.list","Ags.In.Fgs"),file =filename [1])
+
+	#save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num"),file =filename [1])
+
+	write.csv2(ResultNEAxls , file=filename[2], row.names =F, quote = F)
+
+}
+
+else {
+	save(list=c("nlink.M","Mzscore","permutedNetwork","network.link.num", "AGS","FGS","NETWORK","AnnotationDB"),file =filename [1])
+}
+
+
 
 print (paste("The analysis is finished at ", date() ))
 print (paste("Results are saved in ", filename [1], " and ", filename[2]))
