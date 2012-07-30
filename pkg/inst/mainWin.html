@@ -1,8 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>Untitled</title>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>neaGUI</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta name="author" content="Setia Pramana">
 <meta name="generator" content="Web Page Maker">
 <style type="text/css">
 /*----------Text Styles----------*/
@@ -46,7 +47,7 @@ DIV,UL,OL /* Left */
 <div><font color="#003366" face="Rod" class="ws11"><B>Network Enrichment Analysis GUI</B></font></div>
 </div></div>
 
-<div id="text3" style="position:absolute; overflow:hidden; left:27px; top:209px; width:891px; height:1448px; z-index:2">
+<div id="text3" style="position:absolute; overflow:hidden; left:27px; top:209px; width:891px; height:1507px; z-index:2">
 <div class="wpmd">
 <div align=justify><font face="Times New Roman" class="ws12"><B>Installation</B></font></div>
 <div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
@@ -92,12 +93,30 @@ DIV,UL,OL /* Left */
 <div align=justify><font face="Times New Roman" class="ws12">The following options need to be specified:</font></div>
 <div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
 <OL>
-<li value=1><font face="Times New Roman" class="ws12"><a href="input.html" title="">Altered gene set (AGS).</a></font></li>
+<li value=1><font face="Times New Roman" class="ws12">Altered gene set (AGS).</font><font face="Times New Roman" class="ws12">The main input of neaGUI is a list of altered gene sets (AGSs) which is usually a list of differentially expressed genes. Note that the imputed AGS should be ranked in advance based on user defined criteria (e.g., p-values). Example of AGS input can be found </font><font face="Times New Roman" class="ws12"><a href="input.html" title="">here.</a></font></li>
+</OL>
+<div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
+<OL>
 <li value=2><font face="Times New Roman" class="ws12">The statistics of the NEA method , fixed NEA (FNEA, default) and maximum NEA (MNEA). FNEA depends on the size of ags while MNEA avoids the dependence by taking the largest statistic across AGS. More detail please see Alexeyenko et al. (2012).</font></li>
+</OL>
+<div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
+<OL>
 <li value=3><font face="Times New Roman" class="ws12">Functional gene sets (FGS). Options to specify&nbsp; known gene sets, databases of group of genes describing their biological activities are necessary. The options provided are GO ontologies (cellular component, biological process, moelcular function) or KEGG pathway. Users can provide their own functional gene sets as a list. Please see the format of AGS input.</font></li>
+</OL>
+<div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
+<OL>
 <li value=4><font face="Times New Roman" class="ws12">Annotation database. The annotation database options which will provide detailed information about the pathways. Besides two provided annotation database options, KEGG pathways(based on KEGG.db package) and Gene Ontologies (based on GO.db), user defined or other annotation database can be specified.</font></li>
-<li value=5><font face="Times New Roman" class="ws12">Gene network.&nbsp; The network input is a vector of gene pairs (two gene symbols with separation) or a list representing the network link. Users are recommended to use a comprehensive merged gene networks discussed by Alexeyenko et al. (2012) which contains 1,445,027 links of 16,299 distinct Human Proteome Organisation (HUPO) genes.The network can be downloaded from http://www.meb.ki.se/~yudpaw. </font></li>
-<li value=6><font face="Times New Roman" class="ws12">Number of permutation. The default number of permutation is 50, however user can increase the number. Note that this permutation procedure only needs to be performed once for each network list. Then the result of permutated network can be used for other analysis for the same network list using options "load previously saved permutations". A permutated network for the merged network using 200 permutations can be obtained from http://www.meb.ki.se/~yudpaw.</font></li>
+</OL>
+<div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
+<OL>
+<li value=5><font face="Times New Roman" class="ws12">Gene network links.&nbsp; The network input is a vector of gene pairs (two gene symbols with separation) or a list representing the network link. Users are recommended to use a comprehensive merged gene networks discussed by Alexeyenko et al. (2012) which contains 1,445,027 links of 16,299 distinct Human Proteome Organisation (HUPO) genes. The network can be downloaded from </font><font face="Times New Roman" class="ws12"><a href="http://www.meb.ki.se/~yudpaw" title="">http://www.meb.ki.se/~yudpaw</a></font><font face="Times New Roman" class="ws12">. Example of network input can be found </font><font face="Times New Roman" class="ws12"><a href="input.html" title="">here.</a></font></li>
+</OL>
+<div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
+<OL>
+<li value=6><font face="Times New Roman" class="ws12">Number of permutation. The default number of permutation is 50, however user can increase the number. Note that this permutation procedure only needs to be performed once for each network list. Then the result of permutated network can be used for other analysis for the same network list using options "load previously saved permutations". A permutated network for the merged network using 200 permutations can be obtained from </font><font face="Times New Roman" class="ws12"><a href="http://www.meb.ki.se/~yudpaw" title="">http://www.meb.ki.se/~yudpaw</a></font><font face="Times New Roman" class="ws12">.</font></li>
+</OL>
+<div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
+<OL>
 <li value=7><font face="Times New Roman" class="ws12">Name of the output. Note that the result files will be saved in the same directory of the AGS input directory.</font></li>
 </OL>
 <div align=justify><font face="Times New Roman" class="ws12"><BR></font></div>
