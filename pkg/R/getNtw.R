@@ -3,7 +3,7 @@ function() {
       
 initdir <- get("initdir", envir = .GlobalEnv )
 fileName <- tclvalue(tkgetOpenFile(filetypes=
-gettext('{"text" {".txt"}} {"Excel Files" {".xls"}}
+gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
 {"All Files" {"*"}}'),initialdir = initdir))
 tkconfigure(tt ,cursor="watch")
       tclvalue(Ntwk) <<- fileName
@@ -21,9 +21,12 @@ assign("NETWORK",network,envir=.GlobalEnv)
 }
 else
 { 
-if(unlist(splitted)[2] == "xls")
+if(unlist(splitted)[2] == "csv")
 {
-network <- unlist(read.xls(fileName))
+#network <- unlist(read.xls(fileName))
+network <- as.character(unlist(read.csv(fileName, header =F)))
+
+
 assign("NETWORK",network,envir=.GlobalEnv)
 }
 ####
@@ -36,7 +39,7 @@ LoadRdata(fileName,"NETWORK")
 }
 #######
 else {
-tkmessageBox(message = "The files is not txt, excel, or RData file")
+tkmessageBox(message = "The files is not txt, csv, or RData file")
 }
 }
 }

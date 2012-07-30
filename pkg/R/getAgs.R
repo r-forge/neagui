@@ -3,7 +3,7 @@ function() {
 #initdir <- get("initdir", envir = .GlobalEnv )
      
 fileName <- tclvalue(tkgetOpenFile(filetypes=
-gettext('{"text" {".txt"}} {"Excel Files" {".xls"}}
+gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
 {"All Files" {"*"}}')))
 
 tkconfigure(tt ,cursor="watch")
@@ -28,9 +28,11 @@ assign("AGS",ags,envir=.GlobalEnv)
 }
 else
 { 
-if(filetype   == "xls")
+if(filetype   == "csv")
 {
-ags <- unlist(read.xls(fileName))
+#ags <- unlist(read.xls(fileName)
+ags <- as.character(unlist(read.csv(fileName, header =F)))
+
 assign("AGS",ags,envir=.GlobalEnv)
 }
 
@@ -43,7 +45,7 @@ assign("AGS",ags,envir=.GlobalEnv)
     }
 
 else {
-tkmessageBox(message = "The files is not txt, excel, or RData file")
+tkmessageBox(message = "The files is not txt, csv, or RData file")
 }
 }
 }
