@@ -2,10 +2,12 @@ saveHtml <-
 function (ResultNEA,fl) {
       linkID  <- NULL
 
-if (FGS=="reactome.db") ResultNEAsrt  <- ResultNEA 
+#if (FGS=="reactome.db") ResultNEAsrt  <- ResultNEA 
+if (fgsChoice=="UsrDfn") ResultNEAsrt  <- ResultNEA 
 else {
 if (FGS=="KEGG" & AnnotationDB== "KEGG.db")  linkID <- paste("http://www.genome.jp/dbget-bin/www_bget?pathway:",ResultNEA$PATH_ID,sep="")
 if ( FGS%in%c("CC","BP","MF") & AnnotationDB== "GO.db")  linkID <- paste("http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=",ResultNEA$GOID,sep="")
+if (FGS=="reactome.db") linkID <- paste("http://www.reactome.org/cgi-bin/eventbrowser?DB=gk_current&ID=",ResultNEA$ReactomePath, sep="") 
 
 ResultNEAsrt <- ResultNEA[order(ResultNEA$P_value),]
 linkIDsrt <- linkID  [order(ResultNEA$P_value)]

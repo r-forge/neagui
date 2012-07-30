@@ -143,7 +143,7 @@ tkgrid(labPerm ,sticky="w")
 
 tkgrid(rb1,sticky="w")
 
-permNum <- tclVar("50")
+permNum <- tclVar("100")
 entry.perm <-tkentry(frame51 ,width="10",textvariable=permNum)
 tkgrid.configure(tklabel(frame51 ,text="Number of permutations:           "),entry.perm,sticky="w")
 
@@ -205,7 +205,7 @@ Seed <- as.numeric(tclvalue(Seednum))
 Perm <- as.numeric(tclvalue(permNum))
 
 if (checkObject ("Seed", del=F)==F) Seed =1234
-if (checkObject ("Perm", del=F)==F) Perm = 50
+if (checkObject ("Perm", del=F)==F) Perm = 100
 
 
 Missing <- NULL
