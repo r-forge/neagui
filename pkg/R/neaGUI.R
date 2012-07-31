@@ -202,10 +202,10 @@ fgsChoice <- fgslist2[as.numeric(tclvalue(tcl(comboBox,"getvalue")))+1]
 dbChoice <- annolist[as.numeric(tclvalue(tcl(comboBoxAnn,"getvalue")))+1]
 
 Seed <- as.numeric(tclvalue(Seednum))
-Perm <- as.numeric(tclvalue(permNum))
+nperm <<- as.numeric(tclvalue(permNum))
 
 if (checkObject ("Seed", del=F)==F) Seed =1234
-if (checkObject ("Perm", del=F)==F) Perm = 100
+if (checkObject ("nperm", del=F)==F) nperm = 100
 
 
 Missing <- NULL
@@ -292,7 +292,6 @@ if (is.null(pexist)) pnet <- NULL
 #### Main Analysis ####
 
 stat <<- rbValstat
-                        nperm <<- Perm 
 
 res <-neaMod(ags=AGS, fgs = FGS, fgslib  = dbInput, network=NETWORK, nperm = nperm , seed = Seed, pnet=pnet, stat=stat )
 
@@ -450,7 +449,6 @@ if (stat=="F") {
       close(pb)
 	fl <- filename[3]
 	saveHtml(ResultNEA,fl)
-
 
 }
 

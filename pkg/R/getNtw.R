@@ -7,6 +7,7 @@ gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
 {"All Files" {"*"}}'),initialdir = initdir))
 tkconfigure(tt ,cursor="watch")
       tclvalue(Ntwk) <<- fileName
+
 if (!nchar(fileName)) 
 {
 tkmessageBox(message = "No file was selected!")
@@ -17,10 +18,9 @@ splitted <- strsplit(fileName,".",fixed=TRUE)
 if(unlist(splitted)[2] == "txt")
 {
  network <- scan(file=fileName, sep=",", what=character())
-assign("NETWORK",network,envir=.GlobalEnv)
+ assign("NETWORK",network,envir=.GlobalEnv)
 }
-else
-{ 
+
 if(unlist(splitted)[2] == "csv")
 {
 #network <- unlist(read.xls(fileName))
@@ -38,9 +38,12 @@ LoadRdata(fileName,"NETWORK")
 #rm(.tempEnv)
 }
 #######
-else {
+if (filetype %in% c( "RData", "Rdata","txt", "csv") ==F)
+ {
 tkmessageBox(message = "The files is not txt, csv, or RData file")
-}
+      tclvalue(Ntwk) <<- ""
+
+
 }
 }
     tkconfigure(tt ,cursor="arrow")

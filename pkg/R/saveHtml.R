@@ -3,11 +3,12 @@ function (ResultNEA,fl) {
       linkID  <- NULL
 
 #if (FGS=="reactome.db") ResultNEAsrt  <- ResultNEA 
-if (fgsChoice=="UsrDfn") ResultNEAsrt  <- ResultNEA 
+if (FGS %in% c("CC","BP","MF","KEGG", "Reactome")==F) ResultNEAsrt  <- ResultNEA 
+
 else {
 if (FGS=="KEGG" & AnnotationDB== "KEGG.db")  linkID <- paste("http://www.genome.jp/dbget-bin/www_bget?pathway:",ResultNEA$PATH_ID,sep="")
 if ( FGS%in%c("CC","BP","MF") & AnnotationDB== "GO.db")  linkID <- paste("http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=",ResultNEA$GOID,sep="")
-if (FGS=="reactome.db") linkID <- paste("http://www.reactome.org/cgi-bin/eventbrowser?DB=gk_current&ID=",ResultNEA$ReactomePath, sep="") 
+if (FGS=="Reactome") linkID <- paste("http://www.reactome.org/cgi-bin/eventbrowser?DB=gk_current&ID=",ResultNEA$PATH_ID, sep="") 
 
 ResultNEAsrt <- ResultNEA[order(ResultNEA$P_value),]
 linkIDsrt <- linkID  [order(ResultNEA$P_value)]
@@ -48,6 +49,12 @@ hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.link=list(GOID=li
  cellspacing=0,table.class='raw', col.width=c(GOID='75px', P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
 
 }
+
+if (FGS=="Reactome" & AnnotationDB== "reactome.db") {
+hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.link=list(PATH_ID=linkIDsrt ),col.style= algn ,
+ cellspacing=0,table.class='raw', col.width=c(PATH_ID='75px', P_value='100px', Z_score='100px', FDR ='100px'),row.names=FALSE)
+}
+
 
 else {
 hwrite(ResultNEAsrt , p, center=TRUE, row.bgcolor='99CCFF',col.style= algn ,
