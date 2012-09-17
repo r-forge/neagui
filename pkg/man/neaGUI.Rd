@@ -4,7 +4,8 @@
 \alias{neaGUI-package}
 
 \description{
-This function will load the neaGUI package.
+The neaGUI package was developed to perform the network enrichment analysis (NEA) proposed by Alexeyenko et al. (2012). The neaGUI requires the following R packages: nea, tcltk, KEGG.db, GO.db, reactome.db, org.Hs.eg.db, AnnotationDbi, and hwriter. 
+To load the neaGUI package use the following command.
 }
 
 
@@ -19,7 +20,7 @@ To run the package, we use the function: neaGUI().
 \author{
 Author: Setia Pramana
 
-Maintainer: Setia Pramana <setia.pramana@ki.be>
+Maintainer: Setia Pramana <setia.pramana@ki.se>
 }
 
 

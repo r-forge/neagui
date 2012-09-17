@@ -1,10 +1,10 @@
 Package: neaGUI
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
-Date: 2012-03-30
+Title: An R package to perform the network enrichment analysis (NEA).
+Version: 1.1.1
+Date: 2012-09-18
 Author: setia pramana
 Maintainer: setia pramana <setia.pramana@ki.se>
-Description: More about what it does (maybe more than one line)
+Description: neaGUI is an easy to use R package developed to perform the network enrichment analysis (NEA) proposed by Alexeyenko et al. (2012). The NEA method extends the overlap statistics in GSEA to network links between genes in the experimental set and those in the functional categories by exploiting biological information in terms of gene interaction network.
 License: GPL-2
-Collate: checkFgs.R getAgs.R getDb.R getFGS.R getNtw.R  getPnet.R LoadRdata.R neaGUI.R neaMod.R  savingRes.R savingRwd.R saveHtml.R
+Collate: checkFgs.R getAgs.R getDb.R getFGS.R getNtw.R  getPnet.R LoadRdata.R neaGUI.R neaMod.R  savingRes.R savingRwd.R saveHtml.R arr2list.R countcon.R gea.R linknum.arr.csum.R linknum.arr.R linknum.list.csum.R linknum.list.R linknum.R list2arr.R list2arr0.R manypnet.R netperm.R pval2FDR.R resample.R zstat.R
