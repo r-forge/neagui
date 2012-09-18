@@ -20,7 +20,7 @@ checkObject ("AnnotationDB")
 checkObject ("NETWORK")
 
 require(tcltk)
-require(nea)
+#require(nea)
 library(AnnotationDbi)
 require(KEGG.db)
 require(GO.db)
