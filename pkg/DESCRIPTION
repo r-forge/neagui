@@ -1,7 +1,7 @@
 Package: neaGUI
 Type: Package
 Title: An R package to perform the network enrichment analysis (NEA).
-Version: 1.1.1
+Version: 1.1.2
 Date: 2012-09-18
 Author: setia pramana
 Maintainer: setia pramana <setia.pramana@ki.se>
