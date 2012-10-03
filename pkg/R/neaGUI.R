@@ -2,6 +2,39 @@ neaGUI <-
 function() {
 
 
+is.installed <- function(mypkg) is.element(mypkg, installed.packages()[,1]) 
+instbioc <- function (pkg) {
+    source("http://www.bioconductor.org/biocLite.R")
+    biocLite(pkg)
+  }
+instcran <- function (pkg) {
+    install.packages(pkg)
+  }
+
+
+pkgcrnls <- c("tcltk","hwriter" )
+pkgbiocls <- c("AnnotationDbi","KEGG.db", "GO.db", "org.Hs.eg.db", "reactome.db")
+pkgls <- c(pkgcrnls ,pkgbiocls )
+allins <- sapply(pkgls,is.installed)
+
+if (all(allins) == F ) {
+   intl <- tkmessageBox(title="Required packages installation", message=paste (pkg, " package is not yet installed, would you like install to install it now? For installation internet connection is needed!", sep=""),icon="question",type="yesno",default="yes")
+   if (tclvalue(intl) == "no") stop("Required packages are not installed")
+    else {
+   	notins <- names(allins[allins==F]) 
+      for (i in notins) {
+         if (i %in% pkgcrnls ) instcran (i)
+         else {
+               instbioc (i)
+                  }
+         }
+        
+	}
+ }
+
+
+if (all(allins) ) {
+
 checkObject <- function (x,del=TRUE) {
    if (del==F) {
       exists(x, envir=.GlobalEnv)
@@ -21,13 +54,14 @@ checkObject ("NETWORK")
 
 require(tcltk)
 #require(nea)
-library(AnnotationDbi)
+require(AnnotationDbi)
 require(KEGG.db)
 require(GO.db)
 require(org.Hs.eg.db)
 require(hwriter)
 tclRequire("BWidget")
 require(reactome.db)
+
 tt <<- tktoplevel()
 tkwm.title(tt,"neaGUI") 
 tkfocus(tt)
@@ -433,7 +467,7 @@ network.link.num <- res$res.nlink
 
 
 if (stat=="F") {
-	ResultNEA <- ResultNEAxls 
+	ResultNEA <- ResultNEAxls[order(ResultNEAxls$Z_score),]
 	FGS.genes.list <- res$fgs.list
 	Ags.In.Fgs <- res$geneinfgs
 
@@ -516,5 +550,5 @@ tkgrid(buttonFrame)
 
 tkwait.window(tt)
 
-
+}
 }
