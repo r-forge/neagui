@@ -18,6 +18,9 @@ pkgls <- c(pkgcrnls ,pkgbiocls )
 allins <- sapply(pkgls,is.installed)
 
 if (all(allins) == F ) {
+
+   if (is.installed("tcltk")) {
+   require (tcltk)
    intl <- tkmessageBox(title="Required packages installation", message=paste (pkg, " package is not yet installed, would you like install to install it now? For installation internet connection is needed!", sep=""),icon="question",type="yesno",default="yes")
    if (tclvalue(intl) == "no") stop("Required packages are not installed")
     else {
@@ -30,8 +33,15 @@ if (all(allins) == F ) {
          }
         
 	}
- }
+   
+   }
+  else {
 
+   stop ("tcltk package is not installed, please install it first!")
+   
+	}
+ 
+}
 
 if (all(allins) ) {
 
