@@ -21,7 +21,7 @@ if (all(allins) == F ) {
 
    if (is.installed("tcltk")) {
    require (tcltk)
-   intl <- tkmessageBox(title="Required packages installation", message=paste (pkg, " package is not yet installed, would you like install to install it now? For installation internet connection is needed!", sep=""),icon="question",type="yesno",default="yes")
+   intl <- tkmessageBox(title="Required packages installation", message="Some required packages are not yet installed, would you like install to install it now? For installation internet connection is needed!",icon="question",type="yesno",default="yes")
    if (tclvalue(intl) == "no") stop("Required packages are not installed")
     else {
    	notins <- names(allins[allins==F]) 
