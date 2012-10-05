@@ -46,15 +46,14 @@ neaGUI <-
 		
 	}
 	
-	checkObject <- function (x,del=TRUE) {
-			if (del==F) {
-				exists(x, envir=.GlobalEnv)
-			} 
-			else {
-				if(exists(x, envir=.GlobalEnv) ) remove(list=x, envir=.GlobalEnv)
-			}
-			
-		}
+	#checkObject <- function (x,del=TRUE) {
+	#		if (del==F) {
+	#			exists(x, envir=.GlobalEnv)
+	#		} 
+	#		else {
+	#			if(exists(x, envir=.GlobalEnv) ) remove(list=x, envir=.GlobalEnv)
+	#		}
+	#	}
 		
 		## remove output from previous analysis ###
 		checkObject ("AGS")
@@ -221,7 +220,7 @@ neaGUI <-
 		SavefileName <- tclVar("nea result")
 
 		cb <- tkcheckbutton(frame62)
-		cbValue <- tclVar("1")
+		cbValue <- tclVar("0")
 		tkconfigure(cb,variable=cbValue)
 
 #SavefileName <<- tclVar("        ")
