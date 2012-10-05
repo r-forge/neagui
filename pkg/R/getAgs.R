@@ -3,14 +3,14 @@ function() {
 #initdir <- get("initdir", envir = .GlobalEnv )
      
 fileName <- tclvalue(tkgetOpenFile(filetypes=
-gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
-{"All Files" {"*"}}')))
+	gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
+	{"All Files" {"*"}}')))
 
-tkconfigure(tt ,cursor="watch")
+	tkconfigure(tt ,cursor="watch")
       initdir <- dirname(fileName)
-assign("initdir",initdir, envir = .GlobalEnv)
+	assign("initdir",initdir, envir = .GlobalEnv)
 
-tclvalue(fileAgs) <<- fileName
+#tclvalue(fileAgs) <<- fileName
 if (!nchar(fileName)) 
 {
 tkmessageBox(message = "No file was selected!")
@@ -24,12 +24,14 @@ splitted2 <- unlist(splitted)
 
 if(filetype  == "txt")
 {
+tclvalue(fileAgs) <<- fileName
 ags <- scan(file=fileName, sep=",", what=character())
 assign("AGS",ags,envir=.GlobalEnv)
 }
  
 if(filetype   == "csv")
 {
+tclvalue(fileAgs) <<- fileName
 #ags <- unlist(read.xls(fileName)
 ags <- as.character(unlist(read.csv(fileName, header =F)))
 
@@ -38,10 +40,9 @@ assign("AGS",ags,envir=.GlobalEnv)
 
 if (filetype  == "RData" | filetype    == "Rdata")
 {
-    #.tempEnv <- new.env()
-    #dataSet <- load(fileName, envir = .tempEnv)
       LoadRdata(fileName,"AGS")
-                      #rm(.tempEnv)
+      tclvalue(fileAgs) <<- paste(inptObjt, "->", fileName)
+	checkObject ("inptObjt")
     }
 
 if (filetype %in% c( "RData", "Rdata","txt", "csv") ==F)

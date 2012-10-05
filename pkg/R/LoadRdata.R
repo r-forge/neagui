@@ -43,11 +43,12 @@ assign(paste(objt), inpt, envir = .GlobalEnv)
       if(exists(".tempEnv")) rm(.tempEnv)
 tkdestroy(ttload )
       options(warn=1)
-    
+assign("inptObjt", name, envir = .GlobalEnv)
 #msg <- paste("You choose ",name ," as the ", objt, " input! ",sep="")
 #tkmessageBox(title=paste(objt, "file input  "),message=msg)
 tkconfigure(tt ,cursor="arrow")
       tkfocus(tt)
+
 }
 
 onCancel <- function()
@@ -64,8 +65,7 @@ Cancel.but <-tkbutton(buttonFrame ,text=" Cancel ",command=onCancel)
 tkgrid(OK.but, Cancel.but)
 tkgrid(buttonFrame)
 tkfocus(ttload)
-
+tkwait.window(ttload )
 tkconfigure(tt ,cursor="arrow")
-
 }
 

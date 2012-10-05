@@ -6,7 +6,6 @@ fileName <- tclvalue(tkgetOpenFile(filetypes=
 gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
 {"All Files" {"*"}}'),initialdir = initdir))
 tkconfigure(tt ,cursor="watch")
-      tclvalue(Ntwk) <<- fileName
 
 if (!nchar(fileName)) 
 {
@@ -17,16 +16,15 @@ else
 splitted <- strsplit(fileName,".",fixed=TRUE)
 if(unlist(splitted)[2] == "txt")
 {
+ tclvalue(Ntwk) <<- fileName
  network <- scan(file=fileName, sep=",", what=character())
  assign("NETWORK",network,envir=.GlobalEnv)
 }
 
 if(unlist(splitted)[2] == "csv")
 {
-#network <- unlist(read.xls(fileName))
+tclvalue(Ntwk) <<- fileName
 network <- as.character(unlist(read.csv(fileName, header =F)))
-
-
 assign("NETWORK",network,envir=.GlobalEnv)
 }
 ####
@@ -35,6 +33,9 @@ if (unlist(splitted)[2] == "RData" | unlist(splitted)[2] == "Rdata")
 #.tempEnv <- new.env()
 #dataSet <- load(fileName, envir = .tempEnv)
 LoadRdata(fileName,"NETWORK")
+  tclvalue(Ntwk) <<- paste(inptObjt, "->", fileName)
+	checkObject ("inptObjt")
+
 #rm(.tempEnv)
 }
 #######

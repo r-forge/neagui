@@ -6,10 +6,13 @@ filename <- tclvalue(tkgetOpenFile(filetypes = gettext("{\"R Data Files\" {\".rd
 initialdir = initdir))
       
 tkconfigure(tt ,cursor="watch")
-      tclvalue(filepnet) <<- filename
+     # tclvalue(filepnet) <<- filename
 
 #dataSet <- load(filename, envir = .tempEnv )
 LoadRdata(filename,"Pnet")
+  tclvalue(filepnet) <<- paste(inptObjt, "->", fileName)
+	checkObject ("inptObjt")
+
       tkconfigure(tt ,cursor="arrow")
 
 

@@ -64,7 +64,6 @@ neaGUI <-
 		checkObject ("NETWORK")
 		
 		require(tcltk)
-#require(nea)
 		require(AnnotationDbi)
 		require(KEGG.db)
 		require(GO.db)
@@ -96,7 +95,9 @@ neaGUI <-
 		frame53 <- tkframe(frame5, borderwidth=2)
 		
 		frame6 <- tkframe(spec.frm, relief="groove", borderwidth=2)
-		
+		frame61 <- tkframe(frame6, borderwidth=2)
+		frame62 <- tkframe(frame6, borderwidth=2)
+
 		buttonFrame <-tkframe(tt,borderwidth=2)
 		
 		fontHeading <- tkfont.create(size=10,weight="bold")
@@ -213,20 +214,28 @@ neaGUI <-
 		
 		### save the result ##
 		
-		labSave <- tklabel(frame6,text="Save the result", font=fontHeading)
-		labSave2 <- tklabel(frame6,text="Specify the file name: ")
-		labSave3 <- tklabel(frame6,text="                                 ")
+		labSave <- tklabel(frame61,text="Save the result", font=fontHeading)
+		labSave2 <- tklabel(frame61,text="Specify the file name: ")
+		labSave3 <- tklabel(frame61,text="                                 ")
 		
 		SavefileName <- tclVar("nea result")
+
+		cb <- tkcheckbutton(frame62)
+		cbValue <- tclVar("1")
+		tkconfigure(cb,variable=cbValue)
+
 #SavefileName <<- tclVar("        ")
-		
 #Browse.but5 <-tkbutton(frame6,text="Browse",command=savingRwd )
-		resEntry <-tkentry(frame6,width="35",textvariable=SavefileName )
-		
+		resEntry <-tkentry(frame61,width="35",textvariable=SavefileName )
 		tkgrid(labSave, sticky="w")
 		tkgrid(labSave2, resEntry,labSave3 ,sticky="w")
 #tkgrid(labSave2, resEntry, Browse.but5,sticky="w")
-		
+
+	
+            tkgrid(cb, tklabel(frame62,text="include all result files"),sticky="w")
+
+           	tkgrid.configure(frame61,sticky="w")
+		tkgrid.configure(frame62,sticky="w")
 		tkgrid.configure(frame6,sticky="w")
 		
 		
@@ -240,7 +249,6 @@ neaGUI <-
 			rbValstat <- as.character(tclvalue(rbValueStat ))
 			
 			fgslist2 <- c("CC","BP","MF","KEGG", "Reactome", "UsrDfn")
-			
 			
 			fgsChoice <- fgslist2[as.numeric(tclvalue(tcl(comboBox,"getvalue")))+1]
 			
@@ -287,6 +295,7 @@ neaGUI <-
 					FGS <<- fgsChoice
 				}
 				
+
 				## get the annotation database ##
 				
 				if(dbChoice == "KEGG annotation" ) dbInput <- "KEGG.db"
@@ -302,6 +311,7 @@ neaGUI <-
 					}
 				}
 				
+
 				FGS <- get("FGS", envir = .GlobalEnv )
 				AGS <- get("AGS", envir = .GlobalEnv )
 				NETWORK <- get("NETWORK", envir = .GlobalEnv )
@@ -314,6 +324,8 @@ neaGUI <-
 				## result file name ##
 				
 				resName <- tclvalue(SavefileName)
+  				cbVal <- as.character(tclvalue(cbValue))
+
 				if (!nchar(resName)) {
 					tclvalue(SavefileName) <<- c("")
 					tkmessageBox(message="No file name for the result")
@@ -482,13 +494,12 @@ neaGUI <-
 							FGS.genes.list <- res$fgs.list
 							Ags.In.Fgs <- res$geneinfgs
 							
-							save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num", "FGS.genes.list","Ags.In.Fgs"),file =filename [1])
-							
-							#save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num"),file =filename [1])
-							
-							write.csv2(ResultNEAxls , file=filename[2], row.names =F, quote = F)
-							
-							
+						      write.csv2(ResultNEAxls , file=filename[2], row.names =F, quote = F)
+
+							## Save full result if check button selected ##
+
+							if (cbVal=="1") save(list=c("ResultNEA","permutedNetwork","AGS","FGS","NETWORK","AnnotationDB","network.link.num", "FGS.genes.list","Ags.In.Fgs"),file =filename [1])
+													
 							print (paste("The analysis is finished at ", date() ))
 							print (paste("Results are saved in ", filename [1], " and ", filename[2]))
 							close(pb)
