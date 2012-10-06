@@ -1,5 +1,4 @@
-checkObject 
-	<- function (x,del=TRUE) {
+checkObject <- function (x,del=TRUE) {
 			if (del==F) {
 				exists(x, envir=.GlobalEnv)
 			} 
