@@ -10,7 +10,7 @@ tkconfigure(tt ,cursor="watch")
 
 #dataSet <- load(filename, envir = .tempEnv )
 LoadRdata(filename,"Pnet")
-  tclvalue(filepnet) <<- paste(inptObjt, "->", fileName)
+  tclvalue(filepnet) <<- paste(inptObjt, "->", filename)
 	checkObject ("inptObjt")
 
       tkconfigure(tt ,cursor="arrow")
