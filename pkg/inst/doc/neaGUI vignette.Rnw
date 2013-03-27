@@ -66,7 +66,7 @@ The main dialog box of \texttt{neaGUI} package is shown in Figure 1. The dialog
 box is divided into three parts:  input specification, permutation, and output.
 
 \begin{figure}
-\includegraphics[scale=0.5]{./images/neawin2.pdf}
+\includegraphics[scale=0.5]{./images/neawin2}
 \caption{\label{fig:Main}The neaGUI package main dialog box.}
 \end{figure}
 
@@ -141,7 +141,7 @@ hyper link to the pathways/ontologies description in the KEGG or GO web site.
 The same information is also given in the csv file.
 
 \begin{figure}
-\includegraphics[width=120mm]{./images/resultneaGUI.pdf}
+\includegraphics[width=120mm]{./images/htmlout}
 \caption{\label{fig:Out}An html output of the neaGUI package.}
 \end{figure}
 
