@@ -1,0 +1,175 @@
+%\VignetteIndexEntry{neaGUI Vignette}
+%\VignetteAuthor{Setia Pramana}
+%\VignetteDepends{}
+%\VignetteKeywords{Network Enrichment ANalysis GUI}
+%\VignettePackage{neaGUI}
+
+
+
+\documentclass[a4paper]{article}
+%\usepackage[OT1]{fontenc}
+\usepackage{Sweave}
+\usepackage{url}
+\begin{document}
+
+\title{Network Enrichment Analysis using neaGUI Package}
+\author{Setia Pramana, Woojoo Lee, Andrey Alexeyenko, Yudi Pawitan}
+\date{April 2, 2013}
+\maketitle
+
+\section{Introduction}
+
+After discovering list of differentially expressed genes, the next challenge is to interpret them 
+on a way that is consistent with biological hypotheses. It is known that genes work on networks. 
+In humans there are around 22,258 to whom correspondence should be addressed protein-coding genes 
+connected in 650,000 predicted interactions (Minguez and Dopazo, 2010).  The knowledge of 
+gene-protein network is now increasingly used as a based for characterizing gene sets. 
+Alexeyenko et al., 2012  proposed a network enrichment analysis (NEA) method which systematically 
+implements the network approach to describe novel gene sets with biologically meaningful functional 
+categories were proposed.
+
+The NEA method integrates functional information and network connectivity of nearly all protein-coding
+genes and quantifies the over/under-representation of the functional group members among the neighbors
+in the gene network rather than in the AGS itself. In the NEA methods a fast network randomization
+algorithm to obtain the distribution of any network statistics under the null hypothesis of no 
+association between an AGS and FGS is used.
+
+
+
+
+\section{Implementation}
+
+
+The \texttt{neaGUI} was developed using the R-tcl/tk interface implemented in
+the \texttt{R-tcl/tk} package (Dalgaard, 2001) and is freely available for
+Windows and Linux from R forge site: \url{https://r-forge.r-project.org/projects/neagui/}.
+The \texttt{neaGUI} requires the following R packages: \texttt{tcltk}, \texttt{KEGG.db}, \texttt{GO.db}, \texttt{reactome.db}, \texttt{org.Hs.eg.db}, \texttt{AnnotationDbi}, and \texttt{hwriter}.
+
+\subsection{Installation}
+
+The following command can be used to install and load the package:
+
+\begin{verbatim}
+> install.packages("neaGUI", repos="http://R-Forge.R-project.org")
+> library(neaGUI)
+> neaGUI()
+\end{verbatim}
+
+
+Note that  when loading \texttt{neaGUI}  will check if all required packages are already installed. 
+If there are packages not yet installed, the required packages will be
+downloaded automatically (internet connection is required).
+
+\section{neaGUI Description}
+
+The main dialog box of \texttt{neaGUI} package is shown in Figure 1. The dialog
+box is divided into three parts:  input specification, permutation, and output.
+
+\begin{figure}
+\includegraphics[scale=0.5]{./images/neawin2}
+\caption{\label{fig:Main}The neaGUI package main dialog box.}
+\end{figure}
+
+
+\subsection{Input}
+
+The main input of neaGUI is a list of altered gene sets (AGSs) which is usually a list of 
+differentially expressed genes and gene network links. 
+The gene network input can be a vector of gene pairs or a list representing the network link. 
+For the vector case, each element has a combined name of two gene symbols with space separation.
+The input can be an R object, csv  file, or txt file.
+
+The other options need to be specified are the following:
+
+\begin{enumerate}
+\item  The statistics of the NEA method , fixed NEA (FNEA, default) and maximum NEA (MNEA). 
+FNEA depends on the size of AGS while MNEA avoids the dependence by taking the largest statistic 
+across AGS. More detail please see Alexeyenko et al. (2012).
+
+\item Functional gene sets (FGS). Options to specify  known gene sets, databases
+of group of genes describing their biological activities are necessary. The options provided are 
+GO ontologies (cellular component, biological process, moelcular function) or KEGG pathway. Users 
+can provide their own functional gene sets as a list. Please see the format of AGS input.
+
+\item Annotation database. The annotation database options which will provide
+detailed information about the pathways. Besides two provided annotation database options, 
+KEGG pathways(based on KEGG.db package) and Gene Ontologies (based on GO.db), user defined or 
+other annotation database can be specified.
+
+\item Gene network links.  The network input is a vector of gene pairs (two gene
+symbols with separation) or a list representing the network link.
+Users are recommended to use a comprehensive merged gene networks discussed by 
+Alexeyenko et al. (2012) which contains 1,445,027 links of 16,299 distinct Human 
+Proteome Organisation (HUPO) genes (Alexeyenko and Sonnhammer, 2009). The merged
+network can be downloaded from \url{http://www.meb.ki.se/~yudpaw/papers/neaGUIdata.RData}. Example of network
+input can be found here.
+
+\item Number of permutation. The default number of permutation is 100, however
+user can increase the number. Note that this permutation procedure only needs to be 
+performed once for each network list. Then the result of permuted network can be used
+for other analysis for the same network list using options "load previously saved permutations". 
+A permuted network for the merged network using 100 permutations can be obtained 
+from \url{http://www.meb.ki.se/~yudpaw/papers/neaGUIdata.RData}.
+
+\item Name of the output. Note that the result files will be saved in the same
+directory of the AGS input directory.
+
+\end{enumerate}
+  
+\subsection{Output}
+
+
+There are three output files, which the name is defined by users, 
+that will be produced by the neaGUI:
+
+\begin{enumerate}
+\item An html file
+\item A csv file containing summary of the result
+\item An R workspace containing complete results (if the option "include all
+result files" is checked).
+\end{enumerate}
+  
+
+
+Figure 2 shows the resulting  html file which contain the summary of the
+results.
+Here the the imputed FGS (pathways) are shown (sorted by on te p-values) with corresponding:  
+number of observed and expected network links, number of genes, number of AGS genes, z-score, 
+p-values based on network permutations, and the false discovery rate (FDR). 
+The same information is also given in the csv file. Note that eash pathway IDs provide a 
+hyper link to the pathways/ontologies description in the KEGG or GO web site. 
+The same information is also given in the csv file.
+
+\begin{figure}
+\includegraphics[width=120mm]{./images/htmlout}
+\caption{\label{fig:Out}An html output of the neaGUI package.}
+\end{figure}
+
+
+
+The  R workspace output contains more detail results from the neaGUI which includes: 
+Nea Result (the same as the csv file), the specified AGS, FGS, Network, AnnotationDB, 
+and the permuted Network (if it is specified before, it will be the same as the input, if not, 
+a new permuted network will be provided).
+
+\section*{References}
+
+\begin{enumerate} 
+\item  A. Alexeyenko and E. L. Sonnhammer. Global networks of functional
+coupling in eukaryotes from comprehensive data integration. \textit{Genome
+Research}, 19:1107-1116, 2009.
+
+\item A. Alexeyenko, W. Lee, M. Pernemalm, J. Guegan, P. Dessen, V. Lazar, J.
+Lehti, and Y. Pawitan. Network enrichment analysis: extension of gene-set
+enrichment analysis to gene networks. \textit{BMC Bioinformatics}, 13:226, 2012.
+
+\item P. Dalgaard. The R-Tcl/Tk interface. \textit{DSC 2001 Proceedings of the
+2nd International Workshop on Distributed Statistical Computing}, Vienna,
+Austria, 2001.
+
+\item P. Minguez and J. Dopazo. Functional genomics and networks: new approaches
+in the extraction of complex gene modules expert. \textit{Rev. Proteomics},
+7(1):55-63, 2010.
+\end{enumerate} 
+
+\end{document}
