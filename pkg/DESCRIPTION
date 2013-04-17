@@ -11,4 +11,4 @@ Imports: AnnotationDbi, org.Hs.eg.db, KEGG.db, GO.db, reactome.db, hwriter
 Suggests: RUnit
 biocViews: Microarray, DifferentialExpression, GUI
 License: GPL-2
-Collate: checkFgs.R getAgs.R getDb.R getFGS.R getNtw.R  getPnet.R LoadRdata.R neaGUI.R neaMod.R  savingRes.R savingRwd.R saveHtml.R arr2list.R countcon.R gea.R linknum.arr.csum.R linknum.arr.R linknum.list.csum.R linknum.list.R linknum.R list2arr.R list2arr0.R manypnet.R netperm.R pval2FDR.R resample.R zstat.R checkObject.R
+Collate: checkFgs.R getAgs.R getDb.R getFGS.R getNtw.R  getPnet.R LoadRdata.R neaGUI.R neaMod.R  savingRes.R savingRwd.R saveHtml.R arr2list.R countcon.R gea.R linknum.arr.csum.R linknum.arr.R linknum.list.csum.R linknum.list.R linknum.R list2arr.R list2arr0.R manypnet.R netperm.R pval2FDR.R resample.R zstat.R checkObject.R test_neaGUI_package.R
