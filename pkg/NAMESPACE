@@ -1,3 +1,2 @@
-importFrom(AnnotationDbi, as.list)
 importFrom(hwriter, hwrite)
 export(neaGUI)
