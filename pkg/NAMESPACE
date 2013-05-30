@@ -1,2 +1,2 @@
 importFrom(hwriter, hwrite)
-export(neaGUI)
+export(neaGUI, nea)
