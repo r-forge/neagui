@@ -85,7 +85,7 @@ Woojoo Lee, Setia Pramana and Yudi Pawitan
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Example 1: artifical data.
+\dontrun{## Example 1: artifical data.
 
 AGS<-c("A","B","C","D","E")
 FGS<-list(FGS1=c("B","E","F","G","H"),FGS2=c("F","C"))
@@ -93,11 +93,11 @@ NETWORK<-c("A B","A F","E C","Q R","S T","U V")
 
 res<-nea(ags=AGS, fgs = FGS, fgslib = NULL, network=NETWORK, pnet = NULL, nperm = 50, stat="F", seed = 1234)
 res$MainResult 
-
+}
 ## Example 2: use of annotaion data.
 ## We use gene symbols (upper case)
-## "hgu133a.db": Affymetrix Human Genome U133 Set annotation data 
 
+\dontrun{
 AGS<-c("AIFM3","DIMT1L","ADNP","AHCYL1","EIF4H","RGL1","SEC23IP","EIF4A1","CSNK2B","NOS3")
 NETWORK<-c("DNAJC6 RGL1","C1ORF156 NCBP2","AHCYL1 RTN3","PLK4 SKIV2L2","C22ORF28 MESDC2","TINP1 UTP23",    
 "HEATR3 MVD","WBP11 XAB2","CSNK2B PA2G4","GCN1L1 RRM2","DIMT1L SMC1A","GPN3 THOC3",     
@@ -107,7 +107,7 @@ NETWORK<-c("DNAJC6 RGL1","C1ORF156 NCBP2","AHCYL1 RTN3","PLK4 SKIV2L2","C22ORF28
 
 res<-nea(ags=AGS, fgs = "KEGG", fgslib = "KEGG.db", network=NETWORK, pnet = NULL, nperm = 5, stat="F", seed = 1234)
 res$MainResult 
-
+}
 %## The function is currently defined as
 %AA
 % Add one or more standard keywords, see file 'KEYWORDS' in the
