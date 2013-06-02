@@ -59,15 +59,14 @@ A seed number for the permutation procedure
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
- \item{nlink}{A vector (of length of fgs) of numbers (stat="F") or a matrix (length of fgs by length of ags lying in the given network) of numbers (stat="M"). The numbers are the network links between AGS and FGS under the given network.}
- \item{res.nlink}{A matrix (the length of fgs by the number of permutation) of network link numbers obtained from the randomly permuted networks (stat="F") or a list of matrix consisting of network link numbers obtained from the randomly permuted networks (stat="M"). When stat="M", each matrix has the same size as nlink and the length of the list is the same as the number of permutation.}
- \item{zscore}{A vector (of length of fgs) of numbers to assess the activation of FGS (stat="F").}
- \item{zscore.mat}{A matrix (the length of fgs by the number of permutation+1) of numbers to assess the activation of FGS (stat="M"). The first nperm columns are from the randomly permuted networks and the last column is from observed data.}
+
+ \item{MainResult}{A matrix (number of rows equal length of fgs) of numbers (stat="F") or a matrix (length of fgs by length of ags lying in the given network) of numbers (stat="M"). The numbers are the network links between AGS and FGS under the given network.}
+ \item{res.nlink}{A matrix (the length of fgs by the number of permutation) of the imputed FGS (pathways) (fgs names are shown as rownames). TheFGS are shown (sorted by on te p-values) with corresponding number of observed and expected network links, number of genes, number of AGS genes, z-score, 
+p-values based on network permutations, and the false discovery rate (FDR).
+}
+\item{geneinfgs} {A vector containing genes from AGS which are in the FGS}
+\item{fgslist}{A list of gene symbols for each FGS}
+\item{pnetout}{A list of permuted network matrix. It can be used for other analysis.} 
 }
 \references{
 %% ~put references to the literature/web site here ~

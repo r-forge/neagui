@@ -131,6 +131,7 @@ result files" is checked).
   
 
 
+
 Figure 2 shows the resulting  html file which contain the summary of the
 results.
 Here the the imputed FGS (pathways) are shown (sorted by on te p-values) with corresponding:  
@@ -151,6 +152,62 @@ The  R workspace output contains more detail results from the neaGUI which inclu
 Nea Result (the same as the csv file), the specified AGS, FGS, Network, AnnotationDB, 
 and the permuted Network (if it is specified before, it will be the same as the input, if not, 
 a new permuted network will be provided).
+
+
+\section{Command Line nea}
+
+For the users who like to use command line nea, the package also provide a
+function called to run the NEA analysis.
+
+\begin{verbatim}
+nea(ags, fgs, fgslib = NULL, network, pnet = NULL, nperm = 50, 
+stat="F", seed = NULL)
+\end{verbatim}
+
+The \texttt{ags} is a vector of altered genes. Gene symbols (upper case) are
+used as a default. The \texttt{fgs} is a list defined by user or a character
+to specify GO ontologies or KEGG pathway. User can provide their own functional 
+gene sets as a list.  Options to specify GO ontologies or KEGG pathway are
+"CC","BP","MF", "KEGG" and "Reactome" (cellular component, biological process,
+moelcular function and KEGG pathway, Reactome). The \texttt{fgslib} is to
+specify the name of annotation data. To use GO terms or KEGG pathways, a
+specific annotation data should be specified. 
+
+The option \texttt{network} is used to defined the network link. 
+\texttt{pnet} is for specifying a list of randomly permuted networks. 
+If we do not have it, the default is null. Last option is \texttt{stat} with two
+types of network enrichment statistic: FNEA and MNEA.
+FNEA (stat="F") depends on the size of ags while MNEA (Stat="M") avoids the dependence by taking
+the largest statistic across AGS. Default is FNEA.
+
+<< echo=T>>=
+library(neaGUI)
+
+AGS<-c("AIFM3","DIMT1L","ADNP","AHCYL1","EIF4H","RGL1",
+		"SEC23IP","EIF4A1","CSNK2B","NOS3")
+
+NETWORK<-c("DNAJC6 RGL1","C1ORF156 NCBP2","AHCYL1 RTN3",
+		"PLK4 SKIV2L2","C22ORF28 MESDC2","TINP1 UTP23",    
+		"HEATR3 MVD","WBP11 XAB2","CSNK2B PA2G4","GCN1L1 RRM2",
+		"DIMT1L SMC1A","GPN3 THOC3", "DLG3 GPHN",
+		"C19ORF29 EXOSC4","AIFM3 SFXN5","HSPA1L RUVBL2",
+		"DLAT EIF4A1","ADNP XRCC5", "NOS2 NOS3","CIZ1 TLK2",
+		"MRPL49 RPS7","GSPT1 SLK","LUC7L2 SEC23IP","DHX8 IGF2BP3",   
+		"CNTROB SASS6","MRPS12 RPLP2","DHODH EIF4H","GINS3 KIF23",
+		"ANXA5 TGFBI","CDK5 PMM1")
+
+res <- nea(ags=AGS, fgs = "KEGG", fgslib = "KEGG.db", network=NETWORK,
+		pnet = NULL, nperm = 10, stat="F", seed = 1234)
+
+head(res$MainResult) 
+@
+
+
+The result matrix is similar with the html output discussed in the previous
+section.
+
+
+
 
 \section*{References}
 
