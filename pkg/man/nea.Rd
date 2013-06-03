@@ -64,7 +64,7 @@ A seed number for the permutation procedure
  \item{res.nlink}{A matrix (the length of fgs by the number of permutation) of the imputed FGS (pathways) (fgs names are shown as rownames). TheFGS are shown (sorted by on te p-values) with corresponding number of observed and expected network links, number of genes, number of AGS genes, z-score, 
 p-values based on network permutations, and the false discovery rate (FDR).
 }
-\item{geneinfgs} {A vector containing genes from AGS which are in the FGS}
+\item{geneinfgs}{A vector containing genes from AGS which are in the FGS}
 \item{fgslist}{A list of gene symbols for each FGS}
 \item{pnetout}{A list of permuted network matrix. It can be used for other analysis.} 
 }
