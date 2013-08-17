@@ -1,10 +1,10 @@
 getAgs <-
 function() {
 #initdir <- get("initdir", envir = .GlobalEnv )
-     
+initdir <- system.file(package="neaGUI", "extdata")    
 fileName <- tclvalue(tkgetOpenFile(filetypes=
 	gettext('{"text" {".txt"}} {"Comma delimited" {".csv"}}
-	{"All Files" {"*"}}')))
+	{"All Files" {"*"}}'), initialdir =initdir))
 
 	tkconfigure(tt ,cursor="watch")
       initdir <- dirname(fileName)
