@@ -107,9 +107,4 @@ NETWORK<-c("DNAJC6 RGL1","C1ORF156 NCBP2","AHCYL1 RTN3","PLK4 SKIV2L2","C22ORF28
 res<-nea(ags=AGS, fgs = "KEGG", fgslib = "KEGG.db", network=NETWORK, pnet = NULL, nperm = 5, stat="F", seed = 1234)
 res$MainResult 
 }
-%## The function is currently defined as
-%AA
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-%\keyword{ ~kwd1 }
-%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+}
